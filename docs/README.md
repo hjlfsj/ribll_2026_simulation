@@ -65,19 +65,19 @@ ribll_2026_simulation/
 
 所有运动学计算均基于相对论四动量 (`ROOT.TLorentzVector`)。Type 1 使用 `ROOT.TGenPhaseSpace` 进行均匀相空间生成；Type 2 和 Type 3 第一步使用质心系角度采样的确定性方法。
 
-#### 类型 1: A → B + C（衰变）
+#### 类型 1: A* → B + C（衰变）
 
-母核 A 以动能 $E_k$ 沿 z 轴飞行，在飞行中衰变为 B 和 C。采用各向同性相空间 (`TGenPhaseSpace`)。
+母核 A 处于激发态（$m_A = m_{A,gs} + E_x$），以动能 $E_k$ 沿 z 轴飞行，在飞行中衰变为 B 和 C。B 和 C 始终为基态。采用各向同性相空间 (`TGenPhaseSpace`)。
 
 | 参数 | 说明 |
 |---|---|
 | `particle_A` | 母核符号，如 `14O` |
 | `E_beam` | 母核动能 [MeV] |
 | `particle_B` | 衰变产物 B（始终基态） |
-| `particle_C` | 衰变产物 C（可设激发态） |
-| `excitation_C` | C 的激发能 [MeV] → 物理上等价于母核 A 激发 |
+| `particle_C` | 衰变产物 C（始终基态） |
+| `excitation_C` | 母核 A 的激发能 [MeV] |
 
-**激发能规则**: Type 1 仅有 `excitation_C` 有效。设置 `excitation_C > 0` 相当于母核 A 处于激发态（$m_A = m_{A,gs} + E_x$），衰变产物 C 获得额外质量。
+**激发能规则**: Type 1 中 `excitation_C` 表示母核 A 的激发能。A 的质量 $m_A = m_{A,gs} + E_x$，衰变产物 B 和 C 始终处于基态。**激发能必须大于基态 Q 值的绝对值**（$E_x > -Q_{gs}$），否则衰变在能量上不可行。
 
 **质心系限制**: Type 1 **不使用** `cms_theta` 参数，衰变始终各向同性。
 
@@ -336,8 +336,9 @@ ribll_2026_simulation/
 # RIBLL2026 模拟配置文件
 
 # ====== 激发能设置规则 ======
-# Type 1 (A→B+C):     只有 A 能设置激发能 → excitation_C 用于产物 C
-#                       (物理上 A*→B+C, C 质量=基态质量+激发能)
+# Type 1 (A*→B+C):     只有 A 能设置激发能 → excitation_C 用于母核 A
+#                       B 和 C 始终基态, A 的质量 = 基态质量 + excitation_C
+#                       要求 excitation_C > -Q_gs (基态Q值的绝对值)
 # Type 2 (A+B→C+D):   只有 C 能设置激发能 → excitation_C 用于产物 C
 # Type 3 (A+B→C*+D→E+F): 只有 C 和 F 能设置激发能 → excitation_C 用于 C*,
 #                         excitation_F 用于衰变产物 F
@@ -370,9 +371,9 @@ particle_E = "6He"
 particle_F = "4He"
 
 # 激发能 [MeV]
-# Type 1: 只有 excitation_C 有效 (A 激发)
-# Type 2: 只有 excitation_C 有效 (C 激发)
-# Type 3: excitation_C (C*激发) + excitation_F (F 激发) 有效
+# Type 1: excitation_C = 母核 A 的激发能 (B和C始终基态, 需 > -Q_gs)
+# Type 2: excitation_C = C 的激发能
+# Type 3: excitation_C = C* 激发能 + excitation_F = F 激发能
 excitation_C = 3.3
 excitation_F = 0.0
 
@@ -569,11 +570,12 @@ from ribll_sim.kinematics.reconstruction import (
     reconstruct_excitation_experimental,
 )
 
-# 测试类型 1: A -> B + C 衰变
+# 测试类型 1: A* -> B + C 衰变 (A激发态)
+# 14O* -> 10C + 4He, 需要激发能 > 基态Q值绝对值 (~10.1 MeV)
 result = simulate_type1_decay(
     particle_A='14O', E_A_kin=490.0,
-    particle_B='6Li', particle_C='10C',
-    excitation_C=3.3
+    particle_B='10C', particle_C='4He',
+    excitation_C=15.0
 )
 print("类型1 valid:", result['valid'])
 print(f"  B: Ek={result['B']['Ek']:.1f} MeV, theta={result['B']['theta']:.1f}°")

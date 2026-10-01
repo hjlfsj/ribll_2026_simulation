@@ -2,8 +2,9 @@
 # 通过修改此文件来控制模拟参数
 #
 # ====== 激发能设置规则 ======
-# Type 1 (A→B+C):     只有 A 能设置激发能 → excitation_C 用于产物 C
-#                       (物理上 C 被激发, 即 A*→B+C, A的质量=基态质量+激发能取决于ROOT)
+# Type 1 (A*→B+C):     只有 A 能设置激发能 → excitation_C 用于母核 A
+#                       B 和 C 始终基态, A 的质量 = 基态质量 + excitation_C
+#                       要求 excitation_C > -Q_gs (基态Q值的绝对值)
 # Type 2 (A+B→C+D):   只有 C 能设置激发能 → excitation_C 用于产物 C
 # Type 3 (A+B→C*+D→E+F): 只有 C 和 F 能设置激发能 → excitation_C 用于中间态 C*,
 #                         excitation_F 用于衰变产物 F
@@ -36,9 +37,9 @@ particle_E = "6He"
 particle_F = "4He"
 
 # 激发能 [MeV]
-# Type 1: 只有 excitation_C 有效 (A 激发)
-# Type 2: 只有 excitation_C 有效 (C 激发)
-# Type 3: excitation_C (C*激发) + excitation_F (F 激发) 有效
+# Type 1: excitation_C = 母核 A 的激发能 (B和C始终基态, 需 > -Q_gs)
+# Type 2: excitation_C = C 的激发能
+# Type 3: excitation_C = C* 激发能 + excitation_F = F 激发能
 excitation_C = 0.0
 excitation_F = 0.0
 

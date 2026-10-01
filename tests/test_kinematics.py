@@ -22,26 +22,43 @@ def check_conservation_2body(initial_p4, p1, p2, tolerance=1e-6):
 
 
 def test_type1_basic():
-    """类型1: 14O -> 10C + 4He (无激发)"""
-    print("测试1: 14O -> 10C + 4He")
-    result = simulate_type1_decay('14O', 100.0, '10C', '4He')
+    """类型1: 14O* -> 10C + 4He (A激发15MeV, 基态Q值=-10.1MeV, 需要激发>10.1MeV)"""
+    print("测试1: 14O* -> 10C + 4He (A激发15MeV)")
+    result = simulate_type1_decay('14O', 100.0, '10C', '4He', excitation_C=15.0)
     assert result['valid'], f"衰变失败: {result.get('reason')}"
     print(f"  Q值: {result['Q_value']:.3f} MeV")
+    print(f"  A激发能: {result['A']['excitation']:.1f} MeV")
     print(f"  10C: Ek={result['B']['Ek']:.2f} MeV, theta={result['B']['theta']:.2f} deg")
     print(f"  4He: Ek={result['C']['Ek']:.2f} MeV, theta={result['C']['theta']:.2f} deg")
     assert check_conservation_2body(result['A']['p4'], result['B'], result['C'])
+    assert result['B']['excitation'] == 0.0, "B应为基态"
+    assert result['C']['excitation'] == 0.0, "C应为基态"
     print("  通过\n")
 
 
-def test_type1_excited_C():
-    """类型1: C带激发态"""
-    print("测试2: 14O -> 10C + 4He (4He激发10MeV)")
-    result = simulate_type1_decay('14O', 100.0, '10C', '4He', excitation_C=10.0)
+def test_type1_excited_A():
+    """类型1: A激发态 (14O* -> 10C + 4He, Ex=12MeV > 基态Q值绝对值10.1MeV)"""
+    print("测试2: 14O* -> 10C + 4He (A激发12MeV)")
+    result = simulate_type1_decay('14O', 100.0, '10C', '4He', excitation_C=12.0)
     if result['valid']:
         print(f"  Q值: {result['Q_value']:.3f} MeV")
+        print(f"  A激发能: {result['A']['excitation']:.1f} MeV")
+        print(f"  10C: Ek={result['B']['Ek']:.2f} MeV, theta={result['B']['theta']:.2f} deg")
+        print(f"  4He: Ek={result['C']['Ek']:.2f} MeV, theta={result['C']['theta']:.2f} deg")
         assert check_conservation_2body(result['A']['p4'], result['B'], result['C'])
+        assert result['C']['excitation'] == 0.0, "C应为基态"
+        assert result['B']['excitation'] == 0.0, "B应为基态"
     else:
-        print(f"  预期失败: {result['reason']}")
+        print(f"  失败: {result['reason']}")
+    print("  通过\n")
+
+
+def test_type1_insufficient_excitation():
+    """类型1: A激发能不足以克服负Q值"""
+    print("测试3: 14O* -> 10C + 4He (激发能=1MeV, 不足以克服负Q值)")
+    result = simulate_type1_decay('14O', 100.0, '10C', '4He', excitation_C=1.0)
+    assert not result['valid'], "激发能不足, 应该失败"
+    print(f"  预期失败: {result['reason']}")
     print("  通过\n")
 
 
@@ -133,7 +150,8 @@ if __name__ == '__main__':
     print("=" * 60 + "\n")
 
     test_type1_basic()
-    test_type1_excited_C()
+    test_type1_excited_A()
+    test_type1_insufficient_excitation()
     test_type2_elastic()
     test_type2_transfer()
     test_type2_invalid()

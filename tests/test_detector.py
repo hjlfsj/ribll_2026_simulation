@@ -63,7 +63,7 @@ def test_detector_hit():
 
     hits = array.trace_particle(0.0, 0.0, 0.0, 0.0, 0.0, 1.0)
     print(f"  正入射(0,0,1): 击中{len(hits)}个探测器")
-    assert len(hits) == 5, f"应击中5个, 实际{len(hits)}"
+    assert len(hits) == 6, f"应击中6个, 实际{len(hits)}"
 
     hits = array.trace_particle(0.0, 0.0, 0.0, 0.0, 1.0, 1.0)
     print(f"  斜入射(0,1,1): 击中{len(hits)}个探测器")
@@ -81,9 +81,9 @@ def test_detector_array_order():
     z_list = [d.z for d in array.detectors]
     print(f"  z位置: {z_list}")
     assert z_list == sorted(z_list), "探测器未按z排序"
-    assert len(array.detectors) == 5
+    assert len(array.detectors) == 6
     assert array.detectors[0].name == 'DSSD1'
-    assert array.detectors[-1].name == 'SSD'
+    assert array.detectors[-1].name == 'CsI'
     print("  通过\n")
 
 
