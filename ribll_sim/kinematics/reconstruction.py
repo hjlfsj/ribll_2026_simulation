@@ -24,7 +24,7 @@ def reconstruct_excitation_type1(result, particle_A, particle_B, particle_C):
 
     M_reco = p4_total.M()
     E_x = M_reco - m_A_gs
-    return max(0.0, E_x)
+    return E_x
 
 
 def reconstruct_excitation_type2(result, particle_A, E_beam, particle_B,
@@ -50,7 +50,7 @@ def reconstruct_excitation_type2(result, particle_A, E_beam, particle_B,
 
     M_C_reco = P_C.M()
     E_x = M_C_reco - m_C_gs
-    return max(0.0, E_x)
+    return E_x
 
 
 def reconstruct_excitation_type3(result, E_beam, particle_A, particle_B,
@@ -70,7 +70,7 @@ def reconstruct_excitation_type3(result, E_beam, particle_A, particle_B,
 
     M_Cstar = P_Cstar.M()
     E_x = M_Cstar - m_C_gs
-    return max(0.0, E_x)
+    return E_x
 
 
 def reconstruct_excitation(kin_result, params):
@@ -141,7 +141,7 @@ def reconstruct_excitation_experimental(detected_data, kin_result, params):
                 Ek_C, theta_C, phi_C, kin_result['C']['name'])
             P_A_reco = P_B_det + P_C_det
             M_A_reco = P_A_reco.M()
-            return max(0.0, M_A_reco - m_A_gs)
+            return M_A_reco - m_A_gs
 
         elif rt == 2:
             m_C_gs = get_particle_mass(params['particle_C'])
@@ -153,7 +153,7 @@ def reconstruct_excitation_experimental(detected_data, kin_result, params):
                 Ek_D, theta_D, phi_D, params['particle_D'])
             P_C_reco = P_A + P_B - P_D_det
             M_C_reco = P_C_reco.M()
-            return max(0.0, M_C_reco - m_C_gs)
+            return M_C_reco - m_C_gs
 
         elif rt == 3:
             m_C_gs = get_particle_mass(params['particle_C'])
@@ -170,7 +170,7 @@ def reconstruct_excitation_experimental(detected_data, kin_result, params):
                 Ek_F, theta_F, phi_F, params['particle_F'])
             P_Cstar = P_E_det + P_F_det
             M_Cstar = P_Cstar.M()
-            return max(0.0, M_Cstar - m_C_gs)
+            return M_Cstar - m_C_gs
     except Exception as e:
         import sys
         print("[ERROR] reconstruct_excitation_experimental:", e, file=sys.stderr)
