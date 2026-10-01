@@ -1,0 +1,97 @@
+# RIBLL2026 模拟配置文件
+# 通过修改此文件来控制模拟参数
+#
+# ====== 激发能设置规则 ======
+# Type 1 (A→B+C):     只有 A 能设置激发能 → excitation_C 用于产物 C
+#                       (物理上 C 被激发, 即 A*→B+C, A的质量=基态质量+激发能取决于ROOT)
+# Type 2 (A+B→C+D):   只有 C 能设置激发能 → excitation_C 用于产物 C
+# Type 3 (A+B→C*+D→E+F): 只有 C 和 F 能设置激发能 → excitation_C 用于中间态 C*,
+#                         excitation_F 用于衰变产物 F
+#                         D 始终基态
+#
+# ====== 质心系角度限制 ======
+# cms_theta: 产物 C 在 A+B 质心系中的最大极角 [度]
+#            第一步反应中, C 的质心系角度在 (0, cms_theta) 中均匀抽样
+#            默认 180 度 (无限制, 全覆盖)
+#            Type 1 不使用此参数 (衰变始终各向同性)
+#            Type 3 第二步 C*→E+F 衰变始终各向同性 (TGenPhaseSpace)
+
+[reaction]
+# 反应类型: 1=A->B+C, 2=A+B->C+D, 3=A+B->C*+D, C*->E+F
+type = 2
+
+# 入射粒子
+particle_A = "14O"
+E_beam = 490.0   # MeV (35 MeV/u * 14)
+
+# 靶核
+particle_B = "2H"
+
+# 出射粒子 (类型2和3使用)
+particle_C = "10C"
+particle_D = "6Li"
+
+# C*衰变产物 (仅类型3使用)
+particle_E = "6He"
+particle_F = "4He"
+
+# 激发能 [MeV]
+# Type 1: 只有 excitation_C 有效 (A 激发)
+# Type 2: 只有 excitation_C 有效 (C 激发)
+# Type 3: excitation_C (C*激发) + excitation_F (F 激发) 有效
+excitation_C = 0.0
+excitation_F = 0.0
+
+# 质心系角度限制 [度] (仅 Type 2,3 第一步使用)
+cms_theta = 20.0
+
+[detectors]
+# 靶参数
+target_thickness_um = 100.0
+
+# PPAC位置模糊: x-y平面sigma [mm]
+ppac_sigma_xy = 0.0
+
+# Si探测器能量分辨 FWHM (比例)
+si_resolution_fwhm = 0.01
+
+[[detectors.detector_list]]
+name = "DSSD1"
+type = "DSSD"
+z = 100.0
+thickness = 68
+grid_n = 32
+
+[[detectors.detector_list]]
+name = "DSSD2"
+type = "DSSD"
+z = 110.0
+thickness = 1000
+grid_n = 64
+
+[[detectors.detector_list]]
+name = "DSSD3"
+type = "DSSD"
+z = 120.0
+thickness = 1000
+grid_n = 32
+
+[[detectors.detector_list]]
+name = "DSSD4"
+type = "DSSD"
+z = 130.0
+thickness = 1000
+grid_n = 32
+
+[[detectors.detector_list]]
+name = "SSD"
+type = "SSD"
+z = 140.0
+thickness = 1500
+
+[simulation]
+n_events = 10000
+
+[output]
+# 输出根目录
+data_dir = "/data/disk1/ribll2026_www_data/simulation"
