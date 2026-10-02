@@ -40,11 +40,11 @@ particle_F = "4He"
 # Type 1: excitation_C = 母核 A 的激发能 (B和C始终基态, 需 > -Q_gs)
 # Type 2: excitation_C = C 的激发能
 # Type 3: excitation_C = C* 激发能 + excitation_F = F 激发能
-excitation_C = 0.0
+excitation_C = 3.3
 excitation_F = 0.0
 
 # 质心系角度限制 [度] (仅 Type 2,3 第一步使用)
-cms_theta = 20.0
+cms_theta = 60.0
 
 [detectors]
 # 靶参数

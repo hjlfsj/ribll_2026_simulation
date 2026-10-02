@@ -22,6 +22,7 @@ from PyQt6.QtCore import Qt
 import matplotlib
 matplotlib.use("QtAgg")
 matplotlib.rcParams["font.family"] = "sans-serif"
+matplotlib.rcParams["font.sans-serif"] = ["Noto Sans CJK SC", "AR PL UKai CN", "DejaVu Sans"]
 matplotlib.rcParams["mathtext.fontset"] = "stix"
 from matplotlib.backends.backend_qtagg import (
     FigureCanvasQTAgg as FigureCanvas,
@@ -235,7 +236,8 @@ class AnalysisWindow(QMainWindow):
             ax = self.fig.add_subplot(2, 2, i + 1)
             if c.hist.sum() > 0:
                 h = c.hist
-                h_disp = np.where(h > 0, np.log10(h), -1) if h.max() > 1 else h
+                with np.errstate(divide='ignore'):
+                    h_disp = np.where(h > 0, np.log10(h), -1) if h.max() > 1 else h
                 im = ax.pcolormesh(
                     np.linspace(0, c.theta_max, c.n_theta + 1),
                     np.linspace(0, c.energy_max, c.n_energy + 1),
