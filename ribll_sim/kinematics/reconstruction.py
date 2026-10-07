@@ -29,27 +29,36 @@ def reconstruct_excitation_type1(result, particle_A, particle_B, particle_C):
 
 def reconstruct_excitation_type2(result, particle_A, E_beam, particle_B,
                                  particle_C, particle_D):
-    """
+    r"""
     类型2: 重建C的激发能
-    A + B -> C + D, 测量C和D
+    A + B -> C* + D -> C_gs + γ + D
 
-    使用缺失质量法: P_C = P_A + P_B - P_D
-    E_x(C) = M_C_reconstructed - m_C_gs
+    方法: 缺失质量法（动量守恒反推束流）
+
+    步骤:
+    1. 由末态动量反推束流动量: p_A = p_C + p_D (忽略 γ 动量)
+    2. 用相对论能量-动量关系重建A的总能量: E_A = √(p_A² + m_A²)
+    3. 缺失质量法: P_C* = P_A_reco + P_B - P_D
+    4. E_x = M(P_C*) - m_C_gs
+
+    全程不依赖 E_beam（束流能散 ~MeV 量级，会引入显著系统误差）。
     """
     m_A = get_particle_mass(particle_A)
     m_B = get_particle_mass(particle_B)
     m_C_gs = get_particle_mass(particle_C)
 
-    E_A_total = E_beam + m_A
-    p_A = sqrt(E_A_total**2 - m_A**2)
-    P_A = ROOT.TLorentzVector(0.0, 0.0, p_A, E_A_total)
-    P_B = ROOT.TLorentzVector(0.0, 0.0, 0.0, m_B)
-
+    p4_C = result['C']['p4']
     p4_D = result['D']['p4']
-    P_C = P_A + P_B - p4_D
 
-    M_C_reco = P_C.M()
-    E_x = M_C_reco - m_C_gs
+    p_A_vec = p4_C.Vect() + p4_D.Vect()
+    p_A2 = p_A_vec.Mag2()
+    E_A = sqrt(p_A2 + m_A * m_A)
+    P_A = ROOT.TLorentzVector(p_A_vec, E_A)
+
+    P_B = ROOT.TLorentzVector(0.0, 0.0, 0.0, m_B)
+    P_Cstar = P_A + P_B - p4_D
+
+    E_x = P_Cstar.M() - m_C_gs
     return E_x
 
 
@@ -118,11 +127,7 @@ def reconstruct_excitation_experimental(detected_data, kin_result, params):
     rt = params['reaction_type']
     m_A = get_particle_mass(params['particle_A'])
     m_B = get_particle_mass(params['particle_B'])
-    E_beam = params['E_beam']
 
-    E_A_total = E_beam + m_A
-    p_A = sqrt(E_A_total**2 - m_A**2)
-    P_A = ROOT.TLorentzVector(0.0, 0.0, p_A, E_A_total)
     P_B = ROOT.TLorentzVector(0.0, 0.0, 0.0, m_B)
 
     try:
@@ -145,15 +150,25 @@ def reconstruct_excitation_experimental(detected_data, kin_result, params):
 
         elif rt == 2:
             m_C_gs = get_particle_mass(params['particle_C'])
+
+            Ek_C = detected_data.get('det_p0_Eexp', detected_data.get('det_p0_Ek', 0))
+            theta_C = detected_data.get('det_p0_theta', 0) * pi / 180.0
+            phi_C = kin_result['C']['phi'] * pi / 180.0
             Ek_D = detected_data.get('det_p1_Eexp', detected_data.get('det_p1_Ek', 0))
             theta_D = detected_data.get('det_p1_theta', 0) * pi / 180.0
             phi_D = kin_result['D']['phi'] * pi / 180.0
 
+            P_C_det = _build_lorentz_from_ek_theta_phi(
+                Ek_C, theta_C, phi_C, kin_result['C']['name'])
             P_D_det = _build_lorentz_from_ek_theta_phi(
                 Ek_D, theta_D, phi_D, params['particle_D'])
-            P_C_reco = P_A + P_B - P_D_det
-            M_C_reco = P_C_reco.M()
-            return M_C_reco - m_C_gs
+
+            p_A_vec = P_C_det.Vect() + P_D_det.Vect()
+            E_A = sqrt(p_A_vec.Mag2() + m_A * m_A)
+            P_A = ROOT.TLorentzVector(p_A_vec, E_A)
+
+            P_Cstar = P_A + P_B - P_D_det
+            return P_Cstar.M() - m_C_gs
 
         elif rt == 3:
             m_C_gs = get_particle_mass(params['particle_C'])
