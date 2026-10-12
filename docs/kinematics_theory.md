@@ -87,10 +87,22 @@ $$
 
 ### 1.5 质心系总能量与 Mandelstam $s$
 
-两体碰撞 $A + B$ 的 Mandelstam 变量 $s$ 定义为系统总四动量的平方：
+两体碰撞 $A + B$ 的 Mandelstam 变量 $s$ 定义为系统总四动量的 Minkowski 内积（"平方"）：
 
 $$
-s = (P_A + P_B)^2 = M^2(P_A + P_B)
+s \equiv P_{\text{total}}^2 = (P_A + P_B)^2
+$$
+
+这里"四动量的平方"不是简单的分量平方和，而是 Minkowski 度规下的内积：对于任意四动量 $P = (E, \vec{p})$，其平方为：
+
+$$
+P^2 = E^2 - |\vec{p}|^2 = E^2 - p_x^2 - p_y^2 - p_z^2
+$$
+
+这正是前面定义的不变质量的平方。因此 $s$ 与系统总不变质量 $M_{\text{total}}$ 的关系为：
+
+$$
+s = (P_A + P_B)^2 = E_{\text{total}}^2 - |\vec{p}_{\text{total}}|^2 = M^2(P_A + P_B)
 $$
 
 $\sqrt{s}$ 即为质心系总能量。两体反应的阈值条件为：
@@ -106,7 +118,7 @@ $$
 反应的 **Q 值**定义为初态与末态静质量之差：
 
 $$
-Q = \sum_i m_i^{\text{initial}} - \sum_f m_f^{\text{final}}
+Q = \sum_i m_{i}^{\text{initial}} - \sum_f m_{f}^{\text{final}}
 $$
 
 - $Q > 0$：放热反应（exothermic），无能量阈值
@@ -120,16 +132,95 @@ $$
 
 ### 1.7 质心系动量
 
-对于两体反应 $A + B \to C + D$，在质心系中，两个出射粒子动量大小相等、方向相反。质心系动量大小由两体相空间公式给出：
+对于两体反应 $A + B \to C + D$，在质心系中，两个出射粒子动量大小相等、方向相反。下面详细推导质心系动量 $p_{cm}$ 的表达式。
+
+**推导出发方程**：质心系中总能量 $\sqrt{s}$ 等于两个出射粒子的能量之和，且两粒子动量大小均为 $p_{cm}$：
 
 $$
-p_{cm} = \frac{\sqrt{[s - (m_C + m_D)^2]\,[s - (m_C - m_D)^2]}}{2\sqrt{s}}
+\begin{cases}
+\sqrt{s} = E_{C}^{cm} + E_{D}^{cm} \\[4pt]
+E_{C}^{cm} = \sqrt{p_{cm}^2 + m_{C}^{2}}, \quad E_{D}^{cm} = \sqrt{p_{cm}^2 + m_{D}^{2}}
+\end{cases}
 $$
 
-质心系中各粒子的能量为：
+将能量表达式代入第一式：
 
 $$
-E_C^{cm} = \sqrt{p_{cm}^2 + m_C^2}, \quad E_D^{cm} = \sqrt{p_{cm}^2 + m_D^2}
+\sqrt{s} = \sqrt{p_{cm}^2 + m_{C}^{2}} + \sqrt{p_{cm}^2 + m_{D}^{2}} \tag{1}
+$$
+
+**求解 $p_{cm}$**：
+
+将式 (1) 两边平方：
+
+$$
+s = (p_{cm}^2 + m_{C}^{2}) + (p_{cm}^2 + m_{D}^{2}) + 2\sqrt{(p_{cm}^2 + m_{C}^{2})(p_{cm}^2 + m_{D}^{2})}
+$$
+
+移项整理，将含根号的项单独放在一边：
+
+$$
+s - 2p_{cm}^2 - m_{C}^{2} - m_{D}^{2} = 2\sqrt{(p_{cm}^2 + m_{C}^{2})(p_{cm}^2 + m_{D}^{2})}
+$$
+
+再次两边平方以消去根号：
+
+$$
+(s - 2p_{cm}^2 - m_{C}^{2} - m_{D}^{2})^2 = 4(p_{cm}^2 + m_{C}^{2})(p_{cm}^2 + m_{D}^{2})
+$$
+
+令 $X \equiv p_{cm}^2$ 以简化书写。展开两边：
+
+左边：
+$$
+\begin{aligned}
+(s - m_{C}^{2} - m_{D}^{2} - 2X)^2
+&= (s - m_{C}^{2} - m_{D}^{2})^2 - 4X(s - m_{C}^{2} - m_{D}^{2}) + 4X^2
+\end{aligned}
+$$
+
+右边：
+$$
+4(X + m_{C}^{2})(X + m_{D}^{2}) = 4X^2 + 4X(m_{C}^{2} + m_{D}^{2}) + 4m_{C}^{2}m_{D}^{2}
+$$
+
+左右相等，$4X^2$ 项抵消，整理得：
+
+$$
+4X\big[(s - m_{C}^{2} - m_{D}^{2}) + (m_{C}^{2} + m_{D}^{2})\big] = (s - m_{C}^{2} - m_{D}^{2})^2 - 4m_{C}^{2}m_{D}^{2}
+$$
+
+即：
+
+$$
+4sX = (s - m_{C}^{2} - m_{D}^{2})^2 - 4m_{C}^{2}m_{D}^{2}
+$$
+
+因此：
+
+$$
+p_{cm}^2 = X = \frac{(s - m_{C}^{2} - m_{D}^{2})^2 - 4m_{C}^{2}m_{D}^{2}}{4s}
+$$
+
+利用平方差公式 $a^2 - b^2 = (a-b)(a+b)$ 化简分子：
+
+$$
+\begin{aligned}
+p_{cm}^2 &= \frac{\big[(s - m_{C}^{2} - m_{D}^{2}) - 2m_{C}m_{D}\big]\;\big[(s - m_{C}^{2} - m_{D}^{2}) + 2m_{C}m_{D}\big]}{4s} \\[8pt]
+        &= \frac{\big[s - (m_{C} + m_{D})^2\big]\;\big[s - (m_{C} - m_{D})^2\big]}{4s}
+\end{aligned}
+$$
+
+最终得到质心系动量大小：
+
+$$
+\boxed{p_{cm} = \frac{\sqrt{[s - (m_C + m_D)^2]\,[s - (m_C - m_D)^2]}}{2\sqrt{s}}}
+$$
+
+此即两体相空间动量公式。质心系中各粒子的能量由在壳条件直接给出：
+
+$$
+E_{C}^{cm} = \sqrt{p_{cm}^2 + m_{C}^{2}}, \quad E_{D}^{cm} = \sqrt{p_{cm}^2 + m_{D}^{2}}
 $$
 
 ---
@@ -158,7 +249,7 @@ $$
 
 1. **构造母核四动量**：
    $$
-   P_A = (E_A, 0, 0, p_A), \quad E_A = E_k + m_A, \quad p_A = \sqrt{E_A^2 - m_A^2}
+   P_A = (E_A, 0, 0, p_A), \quad E_A = E_k + m_A, \quad p_A = \sqrt{E_{A}^{2} - m_{A}^{2}}
    $$
 
 2. **相空间生成**：调用 `TGenPhaseSpace.SetDecay(P_A, 2, [m_B, m_C])` 设置衰变，然后 `Generate()` 进行抽样。生成的两个粒子的四动量 $P_B$、$P_C$ 直接位于实验室系中。
@@ -209,15 +300,15 @@ $$
 4. **构建质心系四动量**：
    $$
    \begin{aligned}
-   P_C^{cm} &= (E_C^{cm},\; p_{cm} \sin\theta_{cm} \cos\phi_{cm},\; p_{cm} \sin\theta_{cm} \sin\phi_{cm},\; p_{cm} \cos\theta_{cm}) \\
-   P_D^{cm} &= (E_D^{cm},\; -p_{cm} \sin\theta_{cm} \cos\phi_{cm},\; -p_{cm} \sin\theta_{cm} \sin\phi_{cm},\; -p_{cm} \cos\theta_{cm})
+   P_{C}^{cm} &= (E_{C}^{cm},\; p_{cm} \sin\theta_{cm} \cos\phi_{cm},\; p_{cm} \sin\theta_{cm} \sin\phi_{cm},\; p_{cm} \cos\theta_{cm}) \\
+   P_{D}^{cm} &= (E_{D}^{cm},\; -p_{cm} \sin\theta_{cm} \cos\phi_{cm},\; -p_{cm} \sin\theta_{cm} \sin\phi_{cm},\; -p_{cm} \cos\theta_{cm})
    \end{aligned}
    $$
-   其中 $E_i^{cm} = \sqrt{p_{cm}^2 + m_i^2}$。
+   其中 $E_{i}^{cm} = \sqrt{p_{cm}^2 + m_{i}^{2}}$。
 
 5. **Boost 回实验室系**：
    $$
-   P_C^{lab} = \text{Boost}(P_C^{cm}, \vec{\beta}_{cm}), \quad P_D^{lab} = \text{Boost}(P_D^{cm}, \vec{\beta}_{cm})
+   P_{C}^{lab} = \text{Boost}(P_{C}^{cm}, \vec{\beta}_{cm}), \quad P_{D}^{lab} = \text{Boost}(P_{D}^{cm}, \vec{\beta}_{cm})
    $$
    其中 $\vec{\beta}_{cm} = \vec{P}_{\text{total}} / E_{\text{total}}$ 为质心系 boost 矢量。
 
@@ -266,7 +357,26 @@ $$
 
 在实验中，探测器测量的是出射粒子的动能和出射角度。运动学重建的目标是从这些观测量出发，反推出反应中激发态粒子的激发能。以下是三种反应类型各自的重建方法。
 
-> **关于 $\gamma$ 光子动量的近似**：激发态核退激时放出的 $\gamma$ 光子动量量级为 $p_\gamma \sim E_x / c \sim \mathcal{O}(1\,\text{MeV}/c)$，远小于重离子动量 $p \sim \mathcal{O}(10^2\,\text{MeV}/c)$。在以下所有重建方法中，忽略 $\gamma$ 光子动量所引入的相对误差 $\ll 1\%$。
+> **关于 $\gamma$ 光子动量的近似**：
+>
+> 激发态核（如 $C^*$ 或 $F^*$）退激时放出 $\gamma$ 光子。光子的静质量为 $0$，其能量等于激发能 $E_x$，动量为：
+>
+> $$
+> p_\gamma = E_\gamma = E_x
+> $$
+>
+> （自然单位制 $c=1$，恢复量纲为 $p_\gamma = E_x / c$）。典型的核激发能 $E_x \sim 1\text{--}10\ \text{MeV}$，因此光子动量 $p_\gamma \sim \mathcal{O}(1\text{--}10\,\text{MeV}/c)$。
+>
+> 与之对比，RIBLL 实验中 $25\ \text{MeV/u}$ 的典型粒子动量（实验室系）为：
+>
+> | 粒子 | 动量 [MeV/$c$] |
+> |:---|:---:|
+> | $^{14}\text{O}$（束流） | $\sim 3042$ |
+> | $^{10}\text{C}$ | $\sim 2175$ |
+> | $^{4}\text{He}$（$\alpha$） | $\sim 869$ |
+> | $^{1}\text{H}$（质子） | $\sim 219$ |
+>
+> 可见 $p_\gamma$ 比重离子动量小 $2\text{--}3$ 个数量级。在以下所有重建方法中，**近似 $\vec{p}_\gamma \approx 0$**（视 $\gamma$ 为仅带走能量、不携带动量的粒子），所引入的相对误差 $\ll 1\%$。
 
 ---
 
@@ -288,12 +398,12 @@ $$
 
 2. 计算 $B+C$ 系统的不变质量，即母核 $A$ 的重建质量：
    $$
-   M_A^{\text{reco}} = M(P_B + P_C) = \sqrt{(E_B + E_C)^2 - |\vec{p}_B + \vec{p}_C|^2}
+   M_{A}^{\text{reco}} = M(P_B + P_C) = \sqrt{(E_B + E_C)^2 - |\vec{p}_B + \vec{p}_C|^2}
    $$
 
 3. 母核 $A$ 的激发能：
    $$
-   E_x(A) = M_A^{\text{reco}} - m_{A,gs}
+   E_x(A) = M_{A}^{\text{reco}} - m_{A,gs}
    $$
 
 此方法无需束流能量信息，仅依赖对两个衰变产物的完整运动学测量。
@@ -345,7 +455,13 @@ $$
 
 利用动量守恒从末态所有粒子的动量反推束流动量，从而重建 $A$ 的能量，绕过束流能散。
 
-**关键思路**：在 $A + B \to C^* + D$ 反应中，忽略 $\gamma$ 光子动量后有 $\vec{p}_A = \vec{p}_C + \vec{p}_D$。由此可以从 $C$ 和 $D$ 的测量动量反推出入射粒子 $A$ 的动量，再用相对论能量-动量关系得到 $E_A$。
+**关键思路**：在 $A + B \to C^* + D$ 反应中，末态由 $C$、$D$ 及 $C^*$ 退激放出的 $\gamma$ 光子组成。由动量守恒：
+
+$$
+\vec{p}_A = \vec{p}_C + \vec{p}_D + \vec{p}_\gamma
+$$
+
+近似 $\vec{p}_\gamma \approx 0$（$p_\gamma \sim \mathcal{O}(1\text{--}10\,\text{MeV}/c) \ll p_{C}, p_{D}$），有 $\vec{p}_A \approx \vec{p}_C + \vec{p}_D$。由此可以从 $C$ 和 $D$ 的测量动量反推出入射粒子 $A$ 的动量，再用相对论能量-动量关系得到 $E_A$。
 
 **重建步骤**：
 
@@ -354,24 +470,24 @@ $$
    P_C = (E_C,\; \vec{p}_C), \quad P_D = (E_D,\; \vec{p}_D)
    $$
 
-2. 利用横动量守恒反推 $A$ 的动量（忽略 $\gamma$ 光子动量）：
+2. 利用动量守恒反推 $A$ 的动量。完整的动量守恒为 $\vec{p}_A = \vec{p}_C + \vec{p}_D + \vec{p}_\gamma$，近似 $\vec{p}_\gamma \approx 0$：
    $$
-   \vec{p}_A^{\text{reco}} = \vec{p}_C + \vec{p}_D
+   \vec{p}_{A}^{\text{reco}} = \vec{p}_C + \vec{p}_D
    $$
 
 3. 利用在壳条件重建 $A$ 的总能量：
    $$
-   E_A^{\text{reco}} = \sqrt{|\vec{p}_A^{\text{reco}}|^2 + m_{A,gs}^2}
+   E_{A}^{\text{reco}} = \sqrt{|\vec{p}_{A}^{\text{reco}}|^2 + m_{A,gs}^2}
    $$
 
 4. 构造反推的 $A$ 四动量：
    $$
-   P_A^{\text{reco}} = (E_A^{\text{reco}},\; \vec{p}_A^{\text{reco}})
+   P_{A}^{\text{reco}} = (E_{A}^{\text{reco}},\; \vec{p}_{A}^{\text{reco}})
    $$
 
 5. 缺失质量法求 $C^*$ 四动量：
    $$
-   P_{C^*} = P_A^{\text{reco}} + P_B - P_D
+   P_{C^*} = P_{A}^{\text{reco}} + P_B - P_D
    $$
 
 6. $C^*$ 的激发能：
@@ -433,7 +549,7 @@ $$
 
 两步的共同输入都是 $M(P_E + P_F)$（即 $C^*$ 的不变质量），差别在于第二步还需要 $Q_1$。$Q_1$ 的获取方式取决于是否测量到了轻粒子 $D$，下面分两种场景讨论。
 
-> **关于 $\gamma$ 光子动量**：唯一需要近似掉 $\gamma$ 动量的地方是计算 $M(P_E + P_F)$——$F$ 退激放出的 $\gamma$ 动量 $p_\gamma \sim E_x(F)/c \sim \mathcal{O}(1\,\text{MeV}/c)$ 远小于 $p_E, p_F$，忽略其动量引入的误差 $\ll 1\%$。
+> **关于 $\gamma$ 光子动量**：$F^*$ 退激放出的 $\gamma$ 光子动量为 $p_\gamma = E_x(F)$。在计算 $M(P_E + P_F)$ 时，完整的四动量守恒为 $P_{C^*} = P_E + P_F + P_\gamma$。近似 $\vec{p}_\gamma \approx 0$（$p_\gamma \sim \mathcal{O}(1\text{--}10\,\text{MeV}/c) \ll p_E, p_F \sim \mathcal{O}(10^2\text{--}10^3\,\text{MeV}/c)$），有 $P_{C^*} \approx P_E + P_F$，所引入误差 $\ll 1\%$。
 
 ---
 
@@ -443,7 +559,7 @@ $$
 
 **重建步骤**：
 
-1. 由 $E$ 和 $F$ 的测量数据构建四动量（$\gamma$ 动量近似为零）：
+1. 由 $E$ 和 $F$ 的测量数据构建四动量。完整的末态四动量为 $P_E$、$P_F$ 及 $F^*$ 退激放出的 $P_\gamma = (E_\gamma, \vec{p}_\gamma)$（其中 $E_\gamma = p_\gamma = E_x(F)$）。近似 $\vec{p}_\gamma \approx 0$：
    $$
    P_E = (E_E,\; \vec{p}_E), \quad P_F = (E_F,\; \vec{p}_F)
    $$
@@ -458,17 +574,17 @@ $$
    P_A = (E_{\text{beam}} + m_{A,gs},\; 0, 0, p_A), \quad P_B = (m_{B,gs}, 0, 0, 0)
    $$
 
-4. 由第一步反应反推 $D$ 的四动量：
+4. 由第一步反应反推 $D$ 的四动量。完整的四动量守恒为 $P_A + P_B = P_{C^*} + P_D + P_\gamma$，近似 $\vec{p}_\gamma \approx 0$：
    $$
-   P_D^{\text{reco}} = P_A + P_B - P_{C^*}, \quad P_{C^*} = P_E + P_F
+   P_{D}^{\text{reco}} = P_A + P_B - P_{C^*}, \quad P_{C^*} = P_E + P_F
    $$
 
 5. 由反推出的 $D$ 得到第一步反应 Q 值。由于 $D$ 始终处于基态，其不变质量应等于基态质量：
    $$
-   M(P_D^{\text{reco}}) = m_{D,gs}
+   M(P_{D}^{\text{reco}}) = m_{D,gs}
    $$
    $$
-   Q_1 = (m_{A,gs} + m_{B,gs}) - \big(M(P_E + P_F) + M(P_D^{\text{reco}})\big)
+   Q_1 = (m_{A,gs} + m_{B,gs}) - \big(M(P_E + P_F) + M(P_{D}^{\text{reco}})\big)
    $$
 
 6. **得到 $F$ 的激发能**：
@@ -497,12 +613,12 @@ $$
    M(P_D) = m_{D,gs}
    $$
 
-4. 利用动量守恒反推 $A$ 的四动量（不依赖 $E_{\text{beam}}$）：
+4. 利用动量守恒反推 $A$ 的四动量（不依赖 $E_{\text{beam}}$）。完整的动量守恒为 $\vec{p}_A = \vec{p}_E + \vec{p}_F + \vec{p}_D + \vec{p}_\gamma$，近似 $\vec{p}_\gamma \approx 0$：
    $$
-   \vec{p}_A^{\text{reco}} = \vec{p}_E + \vec{p}_F + \vec{p}_D
+   \vec{p}_{A}^{\text{reco}} = \vec{p}_E + \vec{p}_F + \vec{p}_D
    $$
    $$
-   E_A^{\text{reco}} = \sqrt{|\vec{p}_A^{\text{reco}}|^2 + m_{A,gs}^2}
+   E_{A}^{\text{reco}} = \sqrt{|\vec{p}_{A}^{\text{reco}}|^2 + m_{A,gs}^2}
    $$
 
 5. 由第一步反应得到 $Q_1$（无需束流能量）：

@@ -182,7 +182,7 @@ ribll_2026_simulation/
 | 反应类型 | 重建目标 | 方法 | 公式 |
 |---|---|---|---|
 | 类型 1 | A | 不变质量法 | $E_x(A) = M(B+C) - m_{A,gs}$ |
-| 类型 2 | C | 缺失质量法 | $\vec{p}_A=\vec{p}_C+\vec{p}_D,\;E_A=\sqrt{p_A^2+m_A^2},\;E_x=M(P_A^{\text{reco}}+P_B-P_D)-m_{C,gs}$ |
+| 类型 2 | C | 缺失质量法 | $\vec{p}_A=\vec{p}_C+\vec{p}_D,\;E_A=\sqrt{p_{A}^{2}+m_{A}^{2}},\;E_x=M(P_{A}^{\text{reco}}+P_B-P_D)-m_{C,gs}$ |
 | 类型 3 | C | 不变质量法 | $E_x(C) = M(E+F) - m_{C,gs}$ |
 
 > **类型 2 不依赖 E_beam**：束流能量由 $\vec{p}_C+\vec{p}_D$ 反推，绕开束流能散（~MeV）引入的系统误差。$\vec{p}_\gamma$ 远小于粒子动量，忽略。
@@ -194,10 +194,10 @@ ribll_2026_simulation/
 | 反应类型 | 所用数据 | 方法 |
 |---|---|---|
 | 类型 1 | det_p0 (B) + det_p1 (C) 的 Eexp, θ | 不变质量法 $M(B+C) - m_{A,gs}$ |
-| 类型 2 | det_p0 (C) + det_p1 (D) 的 Eexp, θ | **缺失质量法（动量守恒反推束流）** $\vec{p}_A=\vec{p}_C^{\text{det}}+\vec{p}_D^{\text{det}},\;E_x=M(P_A^{\text{reco}}+P_B-P_D^{\text{det}})-m_{C,gs}$ |
+| 类型 2 | det_p0 (C) + det_p1 (D) 的 Eexp, θ | **缺失质量法（动量守恒反推束流）** $\vec{p}_A=\vec{p}_{C}^{\text{det}}+\vec{p}_{D}^{\text{det}},\;E_x=M(P_{A}^{\text{reco}}+P_B-P_{D}^{\text{det}})-m_{C,gs}$ |
 | 类型 3 | det_p0 (E) + det_p1 (F) 的 Eexp, θ | 不变质量法 $M(E+F) - m_{C,gs}$ |
 
-> **为什么类型 2 不直接用 E_beam？** 束流能散 ~MeV，直接使用会引入显著系统误差。改用 $\vec{p}_C+\vec{p}_D$ 反推 $\vec{p}_A$，再用 $E_A=\sqrt{p_A^2+m_A^2}$ 重建能量，完全规避束流能散。
+> **为什么类型 2 不直接用 E_beam？** 束流能散 ~MeV，直接使用会引入显著系统误差。改用 $\vec{p}_C+\vec{p}_D$ 反推 $\vec{p}_A$，再用 $E_A=\sqrt{p_{A}^{2}+m_{A}^{2}}$ 重建能量，完全规避束流能散。
 >
 > **为什么忽略 $\vec{p}_\gamma$？** C* 退激放出的 γ 光子动量 $p_\gamma \approx E_x/c \sim \mathcal{O}(1\text{ MeV}/c)$，远小于 $p_C, p_D \sim \mathcal{O}(10^2\text{ MeV}/c)$。忽略引入的误差 $\ll 1\%$。
 
